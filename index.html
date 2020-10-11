@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-widht, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <title>漫画阅读器H5手机版</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="scripts/view.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="catalog float hidden">
+            <i class="fa fa-bars fa-2x" aria-hidden="true"></i>
+            <span>目录</span>
+        </div>
+        <h3 class="title float hidden">标题</h3>
+        <div class="settings float hidden">
+            <i class="fa fa-cogs fa-2x" aria-hidden="true"></i>
+            <div class="popup"></div>
+            <span>设置</span>
+        </div>
+    </header>
+
+    <ul class="list catalog-list hidden">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+        <li>10</li>
+        <li>11</li>
+        <li>12</li>
+        <li>13</li>
+        <li>14</li>
+        <li>15</li>
+        <li>16</li>
+        <li>17</li>
+        <li>18</li>
+        <li>19</li>
+        <li>20</li>
+    </ul>
+
+    <ul class="list setting-list hidden">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <div class="mask"></div>
+
+    <div class="commic-reader">
+        <div class="picture-box">
+            <!-- 这里是是使用js生存的元素的样板 -->
+            <!-- <div class="charpter" name="chapterName"> -->
+            <!-- <img src="" alt="图片" name="chapterName-vi"> -->
+            <!-- </div> -->
+            <!-- 这里是是使用js生存的元素的样板 -->
+        </div>
+
+        <!-- 阅读器下面的东东 -->
+        <p class="prosses-bar">第X章 第x页/共y页 月/日/时/分</p>
+    </div>
+
+    <div class="functions hidden">
+        <div class="prev float"><i class="fa fa-chevron-circle-left fa-2x" aria-hidden="true"></i><span>上一章</span></div>
+        <div class="light float"><i class="fa fa-moon-o fa-2x" aria-hidden="true"></i><span>夜间模式</span></div>
+        <div class="next float"><i class="fa fa-chevron-circle-right fa-2x" aria-hidden="true"></i><span>下一章</span>
+        </div>
+    </div>
+    <footer></footer>
+
+
+    <!-- 判断是否滚动到底 -->
+    <script>
+        // 卷上去的高度 加上  可视区域的高度 ==  网页的高度  表示已经滚动到底部
+        function scrollBottomOrTop() {
+            var oDiv = document.getElementById('showDiv');
+
+            // window.innerHeight IE9及以上  表示可视区域的距离
+            var clientsHeight = window.innerHeight || document.documentElement.clientHeight || document.body
+                .clientHeight;
+
+            // 卷起的高度
+            var scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+
+            //整个的高度
+            var wholeHeight = Math.max(document.body.scrollHeight + document.documentElement.scrollHeight);
+
+            // console.log(scrollTop);
+
+            // 预加载 更改数值3 越大越提前加载
+            if ((clientsHeight + scrollTop) * 3 >= wholeHeight) {
+                console.log("scroll to bottom");
+                loadNextChapter();
+            }
+
+            if (scrollTop == 0) {
+                console.log("scroll to top");
+            }
+        }
+
+        // 注册scroll事件
+        window.onscroll = function () {
+            scrollBottomOrTop();
+        }
+
+        window.onload = function () {
+            // 获取josn
+            getImgDataFromServer();
+            // 加载第一章
+            loadNextChapter();
+        }
+    </script>
+</body>
+
+</html>

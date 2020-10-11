@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-widht,initial-scale=1.0,suer-scalable=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/font.css">
+    <style>
+        /* 不用link 我tm想把你头砍了 */
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        img{
+        outline-width:0px;
+        vertical-align:top;
+        }
+        html {
+            height: 100%;
+            width: 100%;
+        }
+        body {
+            height: 100%;
+            width: 100%;
+            background-color: #f9f9e3;
+        }
+        li{
+            list-style-type: none;
+        }
+        .mask {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.5);
+            z-index: 0;
+        }
+        .yueduqi {
+            height: 100%;
+            width: 100%;
+            margin: 0 auto;
+            position:absolute;
+            bottom: 0;
+        }
+        .yueduqi.picture-box {
+            overflow: auto;
+        }
+        .yueduqi .picture-box img {
+            width: 100%;
+        }
+        .yueduqi .top {
+            width: 100%;
+            height: 10%;
+            background-color:rgba(0,0,0,.7);
+            position: fixed;
+            top: 0px;
+            display: none;
+        }
+        .yueduqi .bottom {
+            width: 100%;
+            height: 10%;
+            background-color:rgba(0,0,0,.7);
+            position: fixed;
+            bottom: 0px;
+            display: none;
+        }
+        .yueduqi .top-buttons {
+            font-size: 1em;
+            text-align: center;
+            margin-top: 3%;
+            float: left;
+            color: white;
+            width: 15%;
+            height: 100%;
+        }
+        .yueduqi .title {
+            width: 70%;
+            font-size: 1.5em;
+        }
+        .yueduqi .catalog {
+            position: fixed;
+            top: 10%;
+            height: 80%;
+            width: 35%;
+            background-color:rgba(0,0,0,.7);
+            display: none;
+            overflow: auto;
+            z-index: 10;
+        }
+        .yueduqi .catalog li {
+            border-bottom: black 1px solid;
+            color: white;
+            text-align: center;
+            height: 32px;
+            line-height: 32px;
+        }
+        .yueduqi .bottom-buttons {
+            text-align: center;
+            float: left;
+            color: white;
+            height: 100%;
+            width: 33.33%;
+            padding-top: 2%;
+        }
+        .yueduqi span {
+            display: block;
+        }
+
+        /* 这玩意烦的一逼 */
+        /* .yueduqi:hover .out {
+            display: block;
+        } */
+    </style>
+    <script src="scripts/view.js"></script>
+</head>
+<body>
+    <div class="yueduqi">
+        <div class="top out">
+            <div class="top-buttons"><i class="fa fa-bars fa-2x" aria-hidden="true"></i><span>目录</span></div>
+            <h3 class="top-buttons title">标题</h3>
+            <div class="top-buttons"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></i><span>设置</span></div>
+        </div>
+        <ul class="catalog out">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>11</li>
+            <li>12</li>
+            <li>13</li>
+            <li>14</li>
+            <li>15</li>
+            <li>16</li>
+            <li>17</li>
+            <li>18</li>
+            <li>19</li>
+            <li>20</li>
+            <li>21</li>
+            <li>22</li>
+            <li>23</li>
+            <li>24</li>
+            <li>25</li>
+            <li>26</li>
+            <li>27</li>
+            <li>28</li>
+            <li>29</li>
+            <li>30</li>
+            <li>31</li>
+            <li>32</li>
+            <li>33</li>
+            <li>34</li>
+            <li>35</li>
+            <li>36</li>
+            <li>37</li>
+            <li>38</li>
+            <li>39</li>
+            <li>40</li>
+            <li>41</li>
+            <li>42</li>
+            <li>43</li>
+            <li>44</li>
+            <li>45</li>
+            <li>46</li>
+            <li>47</li>
+            <li>48</li>
+            <li>49</li>
+            <li>50</li>
+        </ul>
+
+        <!-- js加载这里 -->
+        <!-- name属性实现进度跳转, 1.0版本不实现 -->
+       
+        <div class="picture-box">
+            <!-- 这里是是使用js生存的元素的样板 -->
+            <!-- <div class="charpter" name="chapterName"> -->
+            <!-- <img src="" alt="图片" name="chapterName-vi"> -->
+            <!-- </div> -->
+            <!-- 这里是是使用js生存的元素的样板 -->
+        </div>
+
+
+        <div class="bottom out">
+            <div class="bottom-buttons backward"><i class="fa fa-arrow-circle-left fa-2x" aria-hidden="true"></i><span>上一章</span></div>
+            <div class="bottom-buttons pause-start"><i class="fa fa-moon-o fa-2x" aria-hidden="true"></i><span>夜间模式</span></div>
+            <div class="bottom-buttons forward"><i class="fa fa-arrow-circle-right fa-2x" aria-hidden="true"></i><span>下一章</span></div>
+        </div>
+
+        <script>
+            // 卷上去的高度 加上  可视区域的高度 ==  网页的高度  表示已经滚动到底部
+            function scrollBottomOrTop() {
+                var oDiv = document.getElementById('showDiv');
+    
+            // window.innerHeight IE9及以上  表示可视区域的距离
+            var clientsHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    
+            // 卷起的高度
+            var scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+    
+            //整个的高度
+            var wholeHeight = Math.max(document.body.scrollHeight + document.documentElement.scrollHeight);
+    
+            // 预加载 更改数值3000 越大越提前加载
+            if (clientsHeight + scrollTop + 3000 >= wholeHeight) {
+                console.log("scroll to bottom");
+                loadNextChapter();
+            }
+    
+            if (scrollTop == 0) {
+                console.log("scroll to top");
+                }
+            }
+    
+            // 注册scroll事件
+            window.onscroll = function() {
+                scrollBottomOrTop();
+            }
+
+            window.onload = function(){
+                // 获取josn
+                getImgDataFromServer();
+                // 加载第一章
+                loadNextChapter();
+            }
+        </script>
+    </div>
+</body>
+</html>
