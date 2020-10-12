@@ -10,21 +10,29 @@
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
 
+    <script src="scripts/init.js"></script>
+    <script src="scripts/index-pre.js"></script>
     <script src="scripts/view.js"></script>
+    <script src="scripts/index-aft.js"></script>
+    
 </head>
 
 <body>
-    <header>
-        <div class="catalog float hidden">
+    <header class="hidden">
+        <!-- 目录 -->
+        <div class="catalog float">
             <i class="fa fa-bars fa-2x" aria-hidden="true"></i>
             <span>目录</span>
         </div>
-        <h3 class="title float hidden">标题</h3>
-        <div class="settings float hidden">
+        <!-- 标题 -->
+        <h3 class="title float">标题</h3>
+        <!-- 设置 -->
+        <div class="settings float">
             <i class="fa fa-cogs fa-2x" aria-hidden="true"></i>
             <div class="popup"></div>
             <span>设置</span>
         </div>
+
     </header>
 
     <ul class="list catalog-list hidden">
@@ -95,7 +103,7 @@
         </div>
 
         <!-- 阅读器下面的东东 -->
-        <p class="prosses-bar">第X章 第x页/共y页 月/日/时/分</p>
+        <p class="process-bar"></p>
     </div>
 
     <div class="functions hidden">
@@ -109,44 +117,7 @@
 
     <!-- 判断是否滚动到底 -->
     <script>
-        // 卷上去的高度 加上  可视区域的高度 ==  网页的高度  表示已经滚动到底部
-        function scrollBottomOrTop() {
-            var oDiv = document.getElementById('showDiv');
-
-            // window.innerHeight IE9及以上  表示可视区域的距离
-            var clientsHeight = window.innerHeight || document.documentElement.clientHeight || document.body
-                .clientHeight;
-
-            // 卷起的高度
-            var scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-
-            //整个的高度
-            var wholeHeight = Math.max(document.body.scrollHeight + document.documentElement.scrollHeight);
-
-            // console.log(scrollTop);
-
-            // 预加载 更改数值3 越大越提前加载
-            if ((clientsHeight + scrollTop) * 3 >= wholeHeight) {
-                console.log("scroll to bottom");
-                loadNextChapter();
-            }
-
-            if (scrollTop == 0) {
-                console.log("scroll to top");
-            }
-        }
-
-        // 注册scroll事件
-        window.onscroll = function () {
-            scrollBottomOrTop();
-        }
-
-        window.onload = function () {
-            // 获取josn
-            getImgDataFromServer();
-            // 加载第一章
-            loadNextChapter();
-        }
+        
     </script>
 </body>
 
