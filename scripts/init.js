@@ -4,6 +4,20 @@
  */
 
 /**
+ * replaceALL方法
+ * @param {}} s1 
+ * @param {*} s2 
+ */
+if (!"".replaceAll) {
+    console.log("我知道你浏览器没有replaceAll方法");
+    console.log("这种浏览器因该不是谷歌浏览器");
+    console.log("看你怪可怜的, 我就勉为其难的为你浏览器写一个把");
+};
+String.prototype.replaceAll = function(s1, s2) {
+    return this.replace(new RegExp(s1, "gm"), s2);
+};
+
+/**
  * 格式化date对象
  * @param {string} fmt 
  */
@@ -26,7 +40,7 @@ Date.prototype.format = function(fmt) {
         }
     }
    return fmt; 
-}   
+};
 
 /**
  * 
@@ -48,7 +62,7 @@ function insertAfter(newEl, targetEl){
  * @param {function} func A function to be added window.onload
  */
 function addLoadEvent(func){
-    console.log("addLoadEvent");
+    // console.log("addLoadEvent");
     var oldLoadEvent = window.onload;
     if(typeof window.onload != "function"){
         window.onload = func;

@@ -31,7 +31,7 @@ function getImgDataFromServer(){
         if(request.readyState == 4){
             recved = request.responseText;
             loadedImgData = JSON.parse(recved);
-            console.log("loaded IMgData: " + loadedImgData);
+            // console.log("loaded IMgData: " + loadedImgData);
         }
 };
 request.send();
@@ -111,7 +111,7 @@ function loadChapter(chapterIndex){
     var listOfLoadedChapter = Object.keys(loadedChapter);
     for (let index = 0; index < listOfLoadedChapter.length; index++) {
         var theChapterIndex = listOfLoadedChapter[index];
-        console.log(theChapterIndex +"   " + chapterIndex)
+        // console.log(theChapterIndex +"   " + chapterIndex)
         if (theChapterIndex > chapterIndex) {
             var theNode = 
                 document.getElementById(loadedImgData[theChapterIndex]["chapterName"]);
@@ -120,7 +120,7 @@ function loadChapter(chapterIndex){
             return true;
         } 
     }
-    console.log("appendChild")
+    // console.log("appendChild")
     pictureBox.appendChild(newChapter);
     loadedChapter[chapterIndex] = true;
     
@@ -163,7 +163,7 @@ function jump(process){
 
     var imgData = loadedImgData[chapterIndex]
     var imgId = imgData["chapterName"] + "-" + vi;
-    console.log(imgId);
+    // console.log(imgId);
     targetImg = document.getElementById(imgId);
     targetImg.scrollIntoView({"behavior":"smooth","block":"start"});
 }

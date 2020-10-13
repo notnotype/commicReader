@@ -61,7 +61,7 @@ function setLight(light){
 
 addLoadEvent(function(){
         // 开关菜单
-        mask.addEventListener("click", function(){
+        mask.addEventListener("touchend", function(){
             if (isMenuOpened){
                 if (isCatalogeOpened || isSettingsOpened) {
                     hiddenElement(settingsList);
@@ -75,7 +75,7 @@ addLoadEvent(function(){
         });
 
         // 弹出设置
-        settings.addEventListener("click", function(){
+        settings.addEventListener("touchend", function(){
             if (isSettingsOpened) {
                 hiddenElement(settingsList);
                 isSettingsOpened = false;
@@ -87,7 +87,7 @@ addLoadEvent(function(){
         })
 
         // 弹出章节列表
-        catalog.addEventListener("click", function(){
+        catalog.addEventListener("touchend", function(){
             if (isCatalogeOpened){
                 hiddenElement(catalogList);
                 isCatalogeOpened = false;
@@ -101,7 +101,7 @@ addLoadEvent(function(){
 
     
         // 夜间模式
-        lightBotton.addEventListener("click", function(){
+        lightBotton.addEventListener("touchend", function(){
             if (currentLight == 0) {
                 currentLight = 3;
             } else if(currentLight == 3) {

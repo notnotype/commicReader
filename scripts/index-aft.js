@@ -25,7 +25,7 @@
             innerHtml = innerHtml + theInnerHtml;
         }
     }
-    console.log(innerHtml);
+    // console.log(innerHtml);
     catalogList.innerHTML = innerHtml;
  }
 
