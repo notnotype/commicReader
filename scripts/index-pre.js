@@ -7,6 +7,8 @@
  */
 
 isMenuOpened = false;
+isSettingsOpened = false;
+isCatalogeOpened = false;
 currentLight = 0;
 
 
@@ -17,7 +19,7 @@ currentLight = 0;
  * @param {element} elem The HTML element you to be popup
 */
 function popupElement(elem){
-    elem.setAttribute("class", elem.getAttribute("class").replace("hidden",""));
+    elem.setAttribute("class", elem.getAttribute("class").replaceAll("hidden",""));
 }
 
 /**
@@ -41,6 +43,9 @@ function popupMenu(){
 function hiddenMenu(){
     hiddenElement(header);
     hiddenElement(functionMenu);
+
+    hiddenElement(settingsList);
+    hiddenElement(catalogList);
     isMenuOpened = false;
 }
 
@@ -57,8 +62,43 @@ function setLight(light){
 addLoadEvent(function(){
         // 开关菜单
         mask.addEventListener("click", function(){
-            isMenuOpened?hiddenMenu():popupMenu()
+            if (isMenuOpened){
+                if (isCatalogeOpened || isSettingsOpened) {
+                    hiddenElement(settingsList);
+                    hiddenElement(catalogList);
+                    isCatalogeOpened = false;
+                    isSettingsOpened = false;
+                } else hiddenMenu();
+            } else {
+                 popupMenu(); 
+            }
         });
+
+        // 弹出设置
+        settings.addEventListener("click", function(){
+            if (isSettingsOpened) {
+                hiddenElement(settingsList);
+                isSettingsOpened = false;
+            } else {
+                popupElement(settingsList);
+            isSettingsOpened = true;
+            }
+            
+        })
+
+        // 弹出章节列表
+        catalog.addEventListener("click", function(){
+            if (isCatalogeOpened){
+                hiddenElement(catalogList);
+                isCatalogeOpened = false;
+            } else {
+                popupElement(catalogList);
+                isCatalogeOpened = true;
+            }
+            
+        })
+
+
     
         // 夜间模式
         lightBotton.addEventListener("click", function(){
@@ -74,3 +114,4 @@ addLoadEvent(function(){
             setLight(currentLight);
         })
 })
+

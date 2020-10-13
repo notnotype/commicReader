@@ -34,109 +34,14 @@ function getImgDataFromServer(){
             console.log("loaded IMgData: " + loadedImgData);
         }
 };
-
 request.send();
 }
-
-/**
- * @description 加载到 charpterIndex章
- * @param chapterIndex 要加载的章
- */
-function loadChapter(chapterIndex){
-    if (!loadedImgData[String(currentChapter + 1)]) {
-        if(alertCount <= 3){
-            alert("完了");
-            alertCount ++;
-        }
-        return null;
-    }
-
-    if (loadedImgData) {
-        var imgData = loadedImgData[String(chapterIndex)];
-        var chapterName = imgData["chapterName"];
-        var imgData = imgData["imgData"];
-        loadImg(chapterName, imgData)
-    }else{
-        alert("未从服务器加载ImgData.json")
-    }
-
-}
-
-/**
- * @description 加载下一章
- */
-function loadNextChapter(){
-    // 如果不是最后一章或者currentChapter是0
-    if ((loadedImgData[String(currentChapter)] && loadedImgData[String(currentChapter + 1)]) || currentChapter == 0) {
-        currentChapter++;
-        console.log("加载第" + currentChapter + "章");
-        return;
-    }
-    
-}
-
-/**
- * @description process 进度, 一个坐标用来标识一部作品的图片位置
- * @return process = {"chapterIndex":int, "vi": int}
- */
-function loadProcessFromCookies(){
-
-}
-
-/**
- * @param process 要跳转的进度
- */
-function jump(process){
-    chapterIndex = process["chapterIndex"];
-    vi = process["vi"];
-
-    
-
-    var imgData = loadedImgData[chapterIndex]
-    var imgId = imgData["chapterName"] + "-" + vi;
-    console.log(imgId);
-    targetImg = document.getElementById(imgId);
-    targetImg.scrollIntoView({"behavior":"smooth","block":"start"});
-}
-
-/**
- * 追踪更新当前进度
- * @param {list}} imgs 
- */
-function addIntersectionObserverForImgs(imgs){
-    if(!IntersectionObserver){
-        alert("傻逼,你浏览器太垃圾了,给老子滚");
-        return;
-    }
-
-    var options = {
-        threshold: 0.6, 
-    };
-    var callback = function(entries, observer) { 
-        entries.forEach(entry => {
-            img = entries[entries.length-1].target;
-            console.log(img.getAttribute("id"));
-
-            // 更新进度
-            id = img.getAttribute("id");
-            temp = id.indexOf("-");
-            currentProcess = {"chapterIndex": currentChapter,
-             "vi": id.substring(temp + 1,id.length + 1)};
-        });
-    };
-    var observer = new IntersectionObserver(callback, options);
-    imgs.forEach(function(img){
-        observer.observe(img);
-    });
-}
-
 /**
  * @param chapterName 
  * @param imgData A list of to be loaded imgs
  */
-function loadImg(chapterName, imgData){
-    var pictureBox = document.getElementsByClassName("picture-box")[0];
-
+function loadImg(chapterIndex, imgData){
+    chapterName = loadedImgData[chapterIndex]["chapterName"];
     var newChapter = document.createElement("div");
     newChapter.setAttribute("class", "chapter");
     newChapter.setAttribute("id", chapterName);
@@ -152,10 +57,148 @@ function loadImg(chapterName, imgData){
     // 为图片追踪进度
     addIntersectionObserverForImgs(newChapter.childNodes);
 
-    pictureBox.appendChild(newChapter);
-}
-        
+    var chapterId = loadedImgData[currentChapter]["chapterName"];
+    var currentChapterElem = document.getElementById(chapterId);
 
+    // 判断插前面还是后面
+    if (loadedChapter[chapterIndex]) {
+        return;
+    }
+    if (Math.max(...Object.keys(loadedChapter)) > currentChapter) { 
+        insertAfter(newChapter,currentChapterElem);
+    } else {
+        pictureBox.insertBefore(newChapter, currentChapterElem)
+    }
+
+    loadedChapter[String(currentChapter)] = true;
+    pictureBox.appendChild(newChapter);
+    return true;
+}
+/**
+ * @description 加载 charpterIndex章
+ * @param chapterIndex 要加载的章
+ */
+function loadChapter(chapterIndex){
+    if (!loadedImgData[String(currentChapter + 1)]) {
+        if(alertCount <= 3){
+            alert("完了");
+            alertCount ++;
+        }
+        return;
+    }
+    if (loadedChapter[chapterIndex]) {
+        return;
+    }
+
+    
+    var imgData = loadedImgData[chapterIndex]["imgData"];
+    var newChapter = document.createElement("div");
+    var chapterName = loadedImgData[chapterIndex]["chapterName"]
+    newChapter.setAttribute("class", "chapter");
+    newChapter.setAttribute("id", chapterName);
+
+    for (let vi = 0; vi < imgData.length; vi++) {
+        let src = imgData[vi];
+        let newImg = document.createElement("img")
+        newImg.setAttribute("src", src);
+        newImg.setAttribute("width", "100%");
+        newImg.setAttribute("id",  chapterName + "-" + String(vi));
+        newChapter.appendChild(newImg);
+    }
+    // 为图片追踪进度
+    addIntersectionObserverForImgs(newChapter.childNodes);
+
+    var listOfLoadedChapter = Object.keys(loadedChapter);
+    for (let index = 0; index < listOfLoadedChapter.length; index++) {
+        var theChapterIndex = listOfLoadedChapter[index];
+        console.log(theChapterIndex +"   " + chapterIndex)
+        if (theChapterIndex > chapterIndex) {
+            var theNode = 
+                document.getElementById(loadedImgData[theChapterIndex]["chapterName"]);
+            pictureBox.insertBefore(newChapter, theNode);
+            loadedChapter[chapterIndex] = true;
+            return true;
+        } 
+    }
+    console.log("appendChild")
+    pictureBox.appendChild(newChapter);
+    loadedChapter[chapterIndex] = true;
+    
+    return true;
+
+}
+
+/**
+ * @description 加载下一章
+ */
+function loadNextChapter(){
+    // 如果不是最后一章或者currentChapter是0
+    if ((loadedImgData[String(currentChapter)] && loadedImgData[String(currentChapter + 1)]) || currentChapter == 0) {
+        currentChapter++;
+        console.log("加载第" + currentChapter + "章");
+        if (!loadChapter(currentChapter)){
+            return;
+        }
+        loadedChapter[String(currentChapter)] = true;
+        return;
+    }
+}
+
+/**
+ * @description process 进度, 一个坐标用来标识一部作品的图片位置
+ * @return process = {"chapterIndex":int, "vi": int}
+ */
+function loadProcessFromCookies(){
+
+}
+
+/**
+ * @param process 要跳转的进度
+ */
+function jump(process){
+    var chapterIndex = process["chapterIndex"];
+    var vi = process["vi"];
+
+    loadChapter(chapterIndex);    
+
+    var imgData = loadedImgData[chapterIndex]
+    var imgId = imgData["chapterName"] + "-" + vi;
+    console.log(imgId);
+    targetImg = document.getElementById(imgId);
+    targetImg.scrollIntoView({"behavior":"smooth","block":"start"});
+}
+
+/**
+ * 追踪vi更新当前进度
+ * @param {list}} imgs 
+ */
+function addIntersectionObserverForImgs(imgs){
+    if(!IntersectionObserver){
+        alert("傻逼,你浏览器太垃圾了,给老子滚!");
+        return;
+    }
+
+    var options = {
+        threshold: 0.6, 
+    };
+    var callback = function(entries, observer) { 
+        entries.forEach(entry => {
+            var img = entries[entries.length-1].target;
+            // console.log(img)
+
+            // 更新进度
+            id = img.getAttribute("id");
+            temp = id.indexOf("-");
+            currentProcess = {"chapterIndex": parseInt(id.substring('6')),
+             "vi": id.substring(temp + 1,id.length + 1)};
+             var currentChapterIndex = currentProcess["chapterIndex"]
+        });
+    };
+    var observer = new IntersectionObserver(callback, options);
+    imgs.forEach(function(img){
+        observer.observe(img);
+    });
+}
 
 /**
  * 网页的滚动事件处理
@@ -176,11 +219,11 @@ function scrollBottomOrTop() {
 
     var scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
 
-    var wholeHeight = Math.max(document.body.scrollHeight + document.documentElement.scrollHeight);
+    var wholeHeight = document.documentElement.scrollHeight;
 
-    if ((clientsHeight + scrollTop) * 3 >= wholeHeight) {
+    if ((clientsHeight + scrollTop + 100)  >= wholeHeight) {
         console.log("scroll to bottom");
-        loadNextChapter();
+        loadChapter(currentProcess["chapterIndex"] + 1);
     }
 
     if (scrollTop == 0) {
@@ -197,4 +240,25 @@ window.onscroll = function () {
 // 加载imgData
 addLoadEvent(getImgDataFromServer);
 // 加载第一章
-addLoadEvent(loadNextChapter)
+addLoadEvent(function(){
+    loadChapter(1);
+})
+// 下滑动画
+addLoadEvent(function(){
+    var img1 = document.getElementById("report1 海崎新太(27)无业 -0");
+    var img2 = document.getElementById("report1 海崎新太(27)无业 -2");
+    // console.log("img1: " + img1);
+    // console.log("img2: " + img2);
+    img2.scrollIntoView({"behavior":"smooth","block":"start"});
+
+    sign = 0;
+    job = setInterval(() => {
+        if(sign >= 1){
+            img1.scrollIntoView({"behavior":"smooth","block":"start"});
+            clearInterval(job);
+        } else {
+            img2.scrollIntoView({"behavior":"smooth","block":"start"});
+            sign++;
+        }
+    }, 300);
+})

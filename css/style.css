@@ -99,12 +99,16 @@ header div:hover{
     z-index: 15;
 }
 
-.list li {
-    height: 50px;
-    border-bottom: white 1px solid;
+.catalog-list li {
+    height: 30px!important;
 }
 
-.setting-list {
+.list li {
+    height: 75px;
+    border-bottom: rgb(144, 147, 165) 1px solid;
+}
+
+.settings-list {
     right: 0px;
 } 
 

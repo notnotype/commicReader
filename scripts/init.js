@@ -28,6 +28,21 @@ Date.prototype.format = function(fmt) {
    return fmt; 
 }   
 
+/**
+ * 
+ * @param {*} func 
+ */
+function insertAfter(newEl, targetEl){
+    var parentEl = targetEl.parentNode;
+    if(parentEl.lastChild == targetEl){
+        parentEl.appendChild(newEl);
+    }else{
+        parentEl.insertBefore(newEl,targetEl.nextSibling);
+    }            
+}
+
+
+
  /**
  * window.onload增加函数
  * @param {function} func A function to be added window.onload
@@ -52,6 +67,11 @@ function loadElements(){
     mask = document.getElementsByClassName("mask")[0];
     processBar = document.getElementsByClassName("process-bar")[0];
     title = document.getElementsByClassName("title")[0];
+    settings = document.getElementsByClassName("settings")[0];
+    catalog = document.getElementsByClassName("catalog")[0];
+    pictureBox = document.getElementsByClassName("picture-box")[0];
+    catalogList = document.getElementsByClassName("catalog-list")[0];
+    settingsList = document.getElementsByClassName("settings-list")[0];
 
     lightBotton = document.getElementsByClassName("light")[0];
     next = document.getElementsByClassName("next")[0];
